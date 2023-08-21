@@ -29,6 +29,7 @@
   "homepage": "https://github.com/Alexandrshy/pr-stats#readme",
   "dependencies": {
     "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0"
   },
