@@ -1,0 +1,37 @@
+{
+  "name": "pr-stats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint",
+    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
+    "all": "npm run lint && npm run prepare"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alexandrshy/pr-stats.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "JavaScript"
+  ],
+  "author": {
+    "name": "Alexandr Shulaev",
+    "email": "alexandrshy@gmail.com",
+    "url": "https://github.com/Alexandrshy"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Alexandrshy/pr-stats/issues"
+  },
+  "homepage": "https://github.com/Alexandrshy/pr-stats#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.36.1",
+    "eslint": "^8.47.0"
+  }
+}
