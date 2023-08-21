@@ -36,13 +36,27 @@ async function run() {
 
         let totalComments = 0;
         let totalRevisions = 0;
+        let totalRevisionsV2 = 0;
 
         for (const pr of pullRequests.items) {
+            const owner = pr.repository.owner.login;
+            const repo = pr.repository.name;
+
             totalComments += pr.comments;
 
             if (pr.requested_reviewers) {
                 totalRevisions += pr.requested_reviewers.length;
             }
+
+            const { data } = await octokit.rest.pulls.listReviews({
+                owner, repo,
+                pull_number: pr.number
+            });
+
+            if (pr.number === 17 || pr.number === 18) console.log('Test data', data);
+
+            const changeRequests = data.reviews.filter(review => review.state === 'CHANGES_REQUESTED').length;
+            totalRevisionsV2 += changeRequests;
         }
 
         const commentsCount = pullRequests.items.map(pr => pr.comments);
@@ -50,8 +64,7 @@ async function run() {
         const averageComments = totalComments / pullRequests.items.length;
         const averageRevisions = totalRevisions / pullRequests.items.length;
 
-        console.log('log - pullRequests.reactions', pullRequests.items[0].reactions);
-        console.log('log - pullRequests.pull_request', pullRequests.items[0].pull_request);
+        console.log('log - totalRevisionsV2', totalRevisionsV2);
         console.log('log - pullRequests', pullRequests);
         console.log('log - averageComments', averageComments);
         console.log('log - percentile75Comments', percentileComments);
