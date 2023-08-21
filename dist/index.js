@@ -9866,7 +9866,7 @@ async function run() {
 
         let metricsContent = `# PR Metrics
         | Metric | Value |
-        | --- | ---: |
+        | --- | --- |
         | Среднее кол-во комментариев | ${averageComments} |
         | Среднее кол-во возвратов | ${totalRevisions} |
         | 75% | ${percentile75Comments} |
