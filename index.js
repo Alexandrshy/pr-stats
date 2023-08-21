@@ -1,7 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-// const fs = require('fs');
-// const wait = require('./wait');
+const fs = require('fs');
 
 function calculatePercentile(values, percentile) {
     if (values.length === 0) return 0;
@@ -13,7 +12,6 @@ function calculatePercentile(values, percentile) {
     return values[lower] * (1 - weight) + values[upper] * weight;
 }
 
-// most @actions toolkit packages have async methods
 async function run() {
     try {
         const token = process.env.GH_TOKEN;
@@ -55,9 +53,28 @@ async function run() {
         console.log('log - percentile75Comments', percentile75Comments);
         console.log('log - totalRevisions', totalRevisions);
 
+        let metricsContent = `# PR Metrics
+        | Metric | Value |
+        | --- | ---: |
+        | Среднее кол-во комментариев | ${averageComments} |
+        | Среднее кол-во возвратов | ${totalRevisions} |
+        | 75% | ${percentile75Comments} |
+    
+        | Title | URL |
+        | --- | --- |
+        `;
+
+        for (const pr of pullRequests.items) {
+            const title = pr.title;
+            const url = pr.html_url;
+            metricsContent += `| ${title} | ${url} |\n`;
+        }
+
         core.setOutput('average_comments', averageComments);
         core.setOutput('percentile75Comments', percentile75Comments);
         core.setOutput('totalRevisions', totalRevisions);
+
+        fs.writeFileSync('pr_metrics.md', metricsContent);
     } catch (error) {
         core.setFailed(error.message);
     }
