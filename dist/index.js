@@ -9857,6 +9857,8 @@ async function run() {
         const percentile75Comments = calculatePercentile(commentsCount, 75);
         const averageComments = totalComments / pullRequests.items.length;
 
+        console.log('log - pullRequests.reactions', pullRequests.items[0].reactions);
+        console.log('log - pullRequests.pull_request', pullRequests.items[0].pull_request);
         console.log('log - pullRequests', pullRequests);
         console.log('log - averageComments', averageComments);
         console.log('log - percentile75Comments', percentile75Comments);
