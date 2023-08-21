@@ -1,0 +1,7 @@
+{
+  "*js": [
+    "npm run prepare",
+    "npm run lint",
+    "git add dist/"
+  ]
+}
