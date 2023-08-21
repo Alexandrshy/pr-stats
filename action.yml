@@ -1,4 +1,4 @@
-name: 'pr-stats'
+name: 'pr-stats-act'
 description: 'Collect statistics on pull requests for a specific query in a convenient format'
 inputs:
   milliseconds:  # id of input
