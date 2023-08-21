@@ -18,3 +18,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SEARCH_QUERY: 'repo:Alexandrshy/pr-stats'
 
+      - name: Copy issue metrics
+        run: |
+          cp ./pr_metrics.md ./pr_metrics_temporary.md
+
+      - name: Merge issue metrics
+        run: |
+          rm ./pr_metrics.md
+          echo "## Result" >> ./pr_metrics.md
+          cat ./pr_metrics_temporary.md >> ./pr_metrics.md
+
+      - name: Create issue
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: Monthly issue metrics report
+          token: ${{ secrets.GITHUB_TOKEN }}
+          content-filepath: ./pr_metrics.md
