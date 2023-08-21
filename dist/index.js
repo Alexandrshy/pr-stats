@@ -9825,6 +9825,7 @@ async function run() {
     try {
         const token = process.env.GH_TOKEN;
         const searchQuery = process.env.SEARCH_QUERY;
+        const percentile = process.env.PERCENTILE || 75;
 
         if (!token || !searchQuery) {
             core.setFailed('GH_TOKEN and SEARCH_QUERY must be defined');
@@ -9854,36 +9855,40 @@ async function run() {
         }
 
         const commentsCount = pullRequests.items.map(pr => pr.comments);
-        const percentile75Comments = calculatePercentile(commentsCount, 75);
+        const percentileComments = calculatePercentile(commentsCount, percentile);
         const averageComments = totalComments / pullRequests.items.length;
+        const averageRevisions = totalRevisions / pullRequests.items.length;
 
         console.log('log - pullRequests.reactions', pullRequests.items[0].reactions);
         console.log('log - pullRequests.pull_request', pullRequests.items[0].pull_request);
         console.log('log - pullRequests', pullRequests);
         console.log('log - averageComments', averageComments);
-        console.log('log - percentile75Comments', percentile75Comments);
-        console.log('log - totalRevisions', totalRevisions);
+        console.log('log - percentile75Comments', percentileComments);
+        console.log('log - averageRevisions', averageRevisions);
 
         let metricsContent = `# PR Metrics
-        | Metric | Value |
-        | --- | --- |
-        | Среднее кол-во комментариев | ${averageComments} |
-        | Среднее кол-во возвратов | ${totalRevisions} |
-        | 75% | ${percentile75Comments} |
-    
-        | Title | URL |
-        | --- | --- |
-        `;
+| Metric | Value |
+| --- | --- |
+| Среднее кол-во комментариев | ${averageComments} |
+| ${percentile}% | ${percentileComments} |
+| Среднее кол-во возвратов | ${averageRevisions} |
+
+| Title | URL | Comments | Returns for revision |
+| --- | --- | --- | --- |
+`;
 
         for (const pr of pullRequests.items) {
             const title = pr.title;
             const url = pr.html_url;
-            metricsContent += `| ${title} | ${url} |\n`;
+            const comments = pr.comments;
+            const revision = pr.requested_reviewers ? pr.requested_reviewers.length : 0;
+
+            metricsContent += `| ${title} | ${url} | ${comments} | ${revision} |\n`;
         }
 
         core.setOutput('average_comments', averageComments);
-        core.setOutput('percentile75Comments', percentile75Comments);
-        core.setOutput('totalRevisions', totalRevisions);
+        core.setOutput('percentileComments', percentileComments);
+        core.setOutput('averageRevisions', averageRevisions);
 
         fs.writeFileSync('pr_metrics.md', metricsContent);
     } catch (error) {
