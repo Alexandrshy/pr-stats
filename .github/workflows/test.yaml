@@ -16,5 +16,5 @@ jobs:
         uses: ./
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SEARCH_QUERY: 'org:optimaxdev is:pr author:mik639 author:mkristian1 author:glassesUSA author:Kipicenko author:kkpodolinniy author:VladZhukovOptimax  created:2023-07-01..2023-07-31 -reason:"not planned"'
+          SEARCH_QUERY: 'repo:Alexandrshy/pr-stats'
 
