@@ -5,6 +5,8 @@ outputs:
     description: 'Average comments for PRs'
   total_revisions:
     description: 'Total revisions for PRs'
+  percentile75Comments:
+    description: 'Total revisions for PRs'
 runs:
   using: 'node16'
   main: 'dist/index.js'
