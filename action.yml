@@ -3,10 +3,10 @@ description: 'Collect statistics on pull requests for a specific query in a conv
 outputs:
   average_comments:
     description: 'Average comments for PRs'
-  total_revisions:
-    description: 'Total revisions for PRs'
-  percentile75Comments:
-    description: 'Total revisions for PRs'
+  averageRevisions:
+    description: ''
+  percentileComments:
+    description: ''
 runs:
   using: 'node16'
   main: 'dist/index.js'
